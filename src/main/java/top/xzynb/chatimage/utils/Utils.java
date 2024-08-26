@@ -51,6 +51,8 @@ public class Utils {
                         for (int x = 0; x < width; x++) {
 //                            java.awt.Color color = new Color(pixels[y * width + x]);
 //                            mapCanvas.setPixelColor(x, y, color);
+                            // 1.19后加入的setPixelColor方法，为了兼容更低版本，使用setPixel方法
+                            // 项目使用的是Spigot-api 1.19.2，会报已弃用警告
                             mapCanvas.setPixel(x, y, MapPalette.matchColor(new Color(pixels[y * width + x])));
                         }
                     }
