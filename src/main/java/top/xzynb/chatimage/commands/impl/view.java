@@ -1,5 +1,9 @@
 package top.xzynb.chatimage.commands.impl;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,9 +29,15 @@ public class view extends ICommand {
             sender.sendMessage(ChatColor.RED + "Image #" + id + " not found!");
             return true;
         }
-        sender.sendMessage(ChatColor.BLUE + "Loading image #" + id + " from " + url + "...");
+
+        ComponentBuilder componentBuilder = new ComponentBuilder();
+        componentBuilder.append(ChatColor.YELLOW + "Loading image #" + id + " from " + url + "...");
+        Text hover_text = new Text("Click to copy");
+        componentBuilder.event(new HoverEvent(hover_text.requiredAction(), hover_text));
+        componentBuilder.event(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, url));
+        sender.spigot().sendMessage(componentBuilder.create());
         MapView mapView = sender.getServer().createMap(sender.getServer().getWorlds().get(0));
-        ItemStack itemStack = Utils.getImageMap(mapView, url);
+        ItemStack itemStack = Utils.getImageMap(mapView, url, id);
         ((Player) sender).getInventory().addItem(itemStack);
 
         return true;

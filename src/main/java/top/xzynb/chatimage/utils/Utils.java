@@ -4,10 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
-import org.bukkit.map.MapCanvas;
-import org.bukkit.map.MapFont;
-import org.bukkit.map.MapRenderer;
-import org.bukkit.map.MapView;
+import org.bukkit.map.*;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
@@ -17,9 +14,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Arrays;
+import java.util.List;
 
 public class Utils {
-    public static ItemStack getImageMap(MapView mapView, String url_str){
+    public static ItemStack getImageMap(MapView mapView, String url_str, Integer id){
         mapView.getRenderers().clear();
         mapView.addRenderer(new MapRenderer() {
             @Override
@@ -50,8 +49,9 @@ public class Utils {
                     pg.grabPixels();
                     for (int y = 0; y < height; y++) {
                         for (int x = 0; x < width; x++) {
-                            java.awt.Color color = new Color(pixels[y * width + x]);
-                            mapCanvas.setPixelColor(x, y, color);
+//                            java.awt.Color color = new Color(pixels[y * width + x]);
+//                            mapCanvas.setPixelColor(x, y, color);
+                            mapCanvas.setPixel(x, y, MapPalette.matchColor(new Color(pixels[y * width + x])));
                         }
                     }
                 } catch (IOException | InterruptedException e) {
@@ -64,6 +64,9 @@ public class Utils {
         MapMeta mapMeta = (MapMeta) itemStack.getItemMeta();
         if (mapMeta != null) {
             mapMeta.setMapView(mapView);
+            mapMeta.setDisplayName("Image #"+id);
+            List<String> lores = Arrays.asList("Image id: "+id, "Image url: "+url_str);
+            mapMeta.setLore(lores);
         }
         itemStack.setItemMeta(mapMeta);
         return itemStack;
