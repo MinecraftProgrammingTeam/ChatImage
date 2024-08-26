@@ -1,0 +1,11 @@
+name: ChatImage
+version: '${project.version}'
+main: top.xzynb.chatimage.ChatImage
+api-version: '1.13'
+authors: [xzyStudio]
+description: A Image Chat Plugin
+website: https://xzynb.top
+commands:
+  ci:
+    description: ChatImage相关指令
+    usage: /ci
