@@ -14,16 +14,12 @@ public abstract class ICommand {
     /**
      * 子指令参数
      */
-    private String params;
+    private final String params;
 
     /**
      * 子指令描述
      */
-    private String info;
-
-    public ICommand(String cmdName) {
-        this.cmdName = cmdName;
-    }
+    private final String info;
 
     public ICommand(String cmdName, String params,String usage) {
         this.cmdName = cmdName;

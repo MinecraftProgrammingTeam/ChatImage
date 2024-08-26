@@ -1,12 +1,12 @@
 package top.xzynb.chatimage.executor;
 
-import top.xzynb.chatimage.commands.ICommand;
-import top.xzynb.chatimage.commands.impl.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
+import top.xzynb.chatimage.commands.ICommand;
+import top.xzynb.chatimage.commands.impl.view;
 
 import java.util.*;
 
@@ -14,27 +14,17 @@ import java.util.*;
  * 子指令处理器
  */
 public class CommandHandler implements TabExecutor {
-    private static CommandHandler instance;
 
     /**
      * 维护的指令集合
      */
     private final Map<String, ICommand> commands = new HashMap<>();
 
-    public Map<String, ICommand> getCommands() {
-        return commands;
-    }
-
     /**
      * handler初始化构造器
      */
     public CommandHandler() {
-        instance = this;
         initHandler();
-    }
-
-    public static CommandHandler getInstance() {
-        return instance;
     }
 
     /**
@@ -42,21 +32,7 @@ public class CommandHandler implements TabExecutor {
      * 注意要使用小写，与发送者的指令进行匹配
      */
     private void initHandler() {
-        /*
-        Reflections reflections = new Reflections("top.xzynb.chatimage.commands.impl");
-        Set<Class<? extends ICommand>> subTypesOf = reflections.getSubTypesOf(ICommand.class);
-//        Main.instance.getLogger().warning(subTypesOf.toArray().toString());
-        subTypesOf.forEach(aClass -> {
-            try {
-                ICommand command = aClass.newInstance();
-                registerCommand(command);
-            } catch (InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        */
-
-        registerCommand(new test());
+        registerCommand(new view());
     }
 
     /**
