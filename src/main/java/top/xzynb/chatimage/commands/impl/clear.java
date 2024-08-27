@@ -17,7 +17,7 @@ public class clear extends ICommand {
     private void clearMaps(Player player){
         Inventory inv = player.getInventory();
         inv.forEach(itemStack -> {
-            if (Objects.requireNonNull(itemStack.getItemMeta()).getDisplayName().contains("Image #")){
+            if (Objects.requireNonNull(Objects.requireNonNull(itemStack.getItemMeta()).getDisplayName()).contains("Image #")){
                 inv.remove(itemStack);
             }
         });

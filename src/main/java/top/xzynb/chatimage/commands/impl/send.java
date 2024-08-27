@@ -8,7 +8,7 @@ import top.xzynb.chatimage.commands.ICommand;
 
 public class send extends ICommand {
     public send(){
-        super("send", "<Image URL>", "Send image");
+        super("send", "<Image_URL>", "Send image");
     }
 
     public boolean onCommand(CommandSender sender, String[] args) {

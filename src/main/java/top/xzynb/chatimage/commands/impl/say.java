@@ -8,7 +8,7 @@ import top.xzynb.chatimage.commands.ICommand;
 
 public class say extends ICommand {
     public say(){
-        super("say", "<Content>", "Say something with image inside");
+        super("say", "<Content>...", "Say something with image inside");
     }
 
     public boolean onCommand(CommandSender sender, String[] args) {
