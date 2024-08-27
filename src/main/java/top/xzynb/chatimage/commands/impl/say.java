@@ -25,6 +25,6 @@ public class say extends ICommand {
     }
 
     public String permission(){
-        return "chatimage.ci.view";
+        return "chatimage.ci.say";
     }
 }

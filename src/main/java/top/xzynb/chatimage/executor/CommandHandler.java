@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import top.xzynb.chatimage.commands.ICommand;
 import top.xzynb.chatimage.commands.impl.clear;
 import top.xzynb.chatimage.commands.impl.say;
+import top.xzynb.chatimage.commands.impl.send;
 import top.xzynb.chatimage.commands.impl.view;
 
 import java.util.*;
@@ -36,6 +37,7 @@ public class CommandHandler implements TabExecutor {
     private void initHandler() {
         registerCommand(new view());
         registerCommand(new say());
+        registerCommand(new send());
         registerCommand(new clear());
     }
 
