@@ -5,57 +5,78 @@ package top.xzynb.chatimage.utils;
 ```
 [CQ:type,arg1=xxx,arg2=123,arg3=sss]
 ```
+注意CQCode前后可能有普通的字符，像下面这样
+```
+hi, this is me[CQ:face,id=151]!
+```
+注意一个句子中可能包含**多个CQCode**，像下面这样：
+```
+hi, [CQ:image,url=https://imageure.com/1.png] how do you think of this [CQ:face,id=135]
+```
+你需要提取出**所有的**CQCode，并支持arg的增删改查操作
  */
 
-import top.xzynb.chatimage.exceptions.NotCQCodeException;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CQCode {
     private String type;
-    private final HashMap<String,String> argMap;
-    private final String cqCode;
+    private HashMap<String, String> args;
+    private final String originCqCode;
 
-    public CQCode(String cqCode) {
-        this.argMap = new HashMap<>();
-        this.cqCode = cqCode;
-        this.parse();
+    public CQCode(String type, HashMap<String, String> args, String originCqCode) {
+        this.type = type;
+        this.args = args;
+        this.originCqCode = originCqCode;
     }
 
     public String getType() {
         return type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public HashMap<String, String> getArgs() {
+        return args;
+    }
+
     public String getArg(String key) {
-        return argMap.get(key);
+        return args.get(key);
     }
 
-    public String getCqCode() {
-        return cqCode;
+    public void setArgs(HashMap<String, String> args) {
+        this.args = args;
     }
 
-    public String toString() {
-        StringBuilder sb = new StringBuilder("[CQ:");
-        sb.append(type);
-        for (String key : argMap.keySet()) {
-            sb.append(",").append(key).append("=").append(argMap.get(key));
-        }
-        sb.append("]");
-        return sb.toString();
+    public void setArg(String key, String value) {
+        args.put(key, value);
     }
 
-    public void parse() {
-        if (!cqCode.startsWith("[CQ:") || !cqCode.endsWith("]")) {
-            throw new NotCQCodeException("Not a CQCode");
-        }
-        this.type = cqCode.substring(4, cqCode.indexOf(","));
-        String[] split = cqCode.substring(4, cqCode.length() - 1).split(",");
-        for (String s : split) {
-            String[] kv = s.split("=");
-            if (kv.length < 2) {
-                continue;
+    public String getOriginCqCode(){
+        return originCqCode;
+    }
+
+    public static List<CQCode> parseCQCodes(String message) {
+        List<CQCode> cqCodes = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\[CQ:(.*?)]");
+        Matcher matcher = pattern.matcher(message);
+        while (matcher.find()) {
+            String cqCodeStr = matcher.group(1);
+            String originCqCode = "[CQ:" + cqCodeStr + "]";
+            String[] parts = cqCodeStr.split(",");
+            String type = parts[0];
+            HashMap<String, String> args = new HashMap<>();
+            for (int i = 1; i < parts.length; i++) {
+                String[] argParts = parts[i].split("=");
+                args.put(argParts[0], argParts[1]);
             }
-            argMap.put(kv[0], kv[1]);
+            cqCodes.add(new CQCode(type, args, originCqCode));
         }
+        return cqCodes;
     }
 }

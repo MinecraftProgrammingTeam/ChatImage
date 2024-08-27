@@ -14,6 +14,7 @@ import top.xzynb.chatimage.executor.CommandHandler;
 import top.xzynb.chatimage.utils.CQCode;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public final class ChatImage extends JavaPlugin {
@@ -48,34 +49,39 @@ public final class ChatImage extends JavaPlugin {
      */
     public static boolean handle(@NotNull  String message, @NotNull Player event_player){
         try{
-            CQCode cqCode = new CQCode(message);
-            if(cqCode.getType().equals("image")){
-                String url = cqCode.getArg("url");
-                Integer id;
-                if (url == null) {
-                    return false;
+            boolean retFlag = false;
+            List<CQCode> cqCodes = CQCode.parseCQCodes(message);
+            for (CQCode cqCode : cqCodes){
+                if(cqCode.getType().equals("image")){
+                    String url = cqCode.getArg("url");
+                    Integer id;
+                    if (url == null) {
+                        return false;
+                    }
+                    if (ChatImage.instance.urlMap.containsKey(url)) {
+                        id = ChatImage.instance.urlMap.get(url);
+                    }else{
+                        id = ChatImage.instance.urlMap.size();
+                        ChatImage.instance.urlMap.put(url, id);
+                        ChatImage.instance.keyMap.put(id, url);
+                    }
+
+                    String msg = "<" + event_player.getName() + "> " +
+                            message.replace(cqCode.getOriginCqCode(),
+                                    ChatColor.GREEN + "[Click to view image #" + id + "]" + ChatColor.RESET);
+
+                    Text hover_text = new Text(url);
+                    ComponentBuilder componentBuilder = new ComponentBuilder();
+                    componentBuilder.append(msg);
+                    componentBuilder.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ci view " + id));
+                    componentBuilder.event(new HoverEvent(hover_text.requiredAction(), hover_text));
+                    ChatImage.instance.getServer().spigot().broadcast(componentBuilder.create());
+
+                    retFlag = true;
                 }
-                if (ChatImage.instance.urlMap.containsKey(url)) {
-                    id = ChatImage.instance.urlMap.get(url);
-                }else{
-                    id = ChatImage.instance.urlMap.size();
-                    ChatImage.instance.urlMap.put(url, id);
-                    ChatImage.instance.keyMap.put(id, url);
-                }
-
-                String msg = "<" + event_player.getName() + "> " +
-                        message.replace(cqCode.getCqCode(),
-                                ChatColor.GREEN + "[Click to view image #" + id + "]" + ChatColor.RESET);
-
-                Text hover_text = new Text(url);
-                ComponentBuilder componentBuilder = new ComponentBuilder();
-                componentBuilder.append(msg);
-                componentBuilder.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ci view " + id));
-                componentBuilder.event(new HoverEvent(hover_text.requiredAction(), hover_text));
-                ChatImage.instance.getServer().spigot().broadcast(componentBuilder.create());
-
-                return true;
             }
+
+            return retFlag;
         }catch (NotCQCodeException e){
             // ignore
         }
