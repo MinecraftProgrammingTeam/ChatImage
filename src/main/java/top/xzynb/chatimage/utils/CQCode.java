@@ -26,11 +26,15 @@ public class CQCode {
     private String type;
     private HashMap<String, String> args;
     private final String originCqCode;
+    private final int startIndex;
+    private final int endIndex;
 
-    public CQCode(String type, HashMap<String, String> args, String originCqCode) {
+    public CQCode(String type, HashMap<String, String> args, String originCqCode, Integer startIndex, Integer endIndex) {
         this.type = type;
         this.args = args;
         this.originCqCode = originCqCode;
+        this.startIndex = startIndex;
+        this.endIndex = endIndex;
     }
 
     public String getType() {
@@ -61,11 +65,21 @@ public class CQCode {
         return originCqCode;
     }
 
+    public int getStartIndex(){
+        return startIndex;
+    }
+
+    public int getEndIndex(){
+        return endIndex;
+    }
+
     public static List<CQCode> parseCQCodes(String message) {
         List<CQCode> cqCodes = new ArrayList<>();
         Pattern pattern = Pattern.compile("\\[CQ:(.*?)]");
         Matcher matcher = pattern.matcher(message);
         while (matcher.find()) {
+            Integer startIndex = matcher.start();
+            Integer endIndex = matcher.end();
             String cqCodeStr = matcher.group(1);
             String originCqCode = "[CQ:" + cqCodeStr + "]";
             String[] parts = cqCodeStr.split(",");
@@ -75,7 +89,7 @@ public class CQCode {
                 String[] argParts = parts[i].split("=");
                 args.put(argParts[0], argParts[1]);
             }
-            cqCodes.add(new CQCode(type, args, originCqCode));
+            cqCodes.add(new CQCode(type, args, originCqCode, startIndex, endIndex));
         }
         return cqCodes;
     }

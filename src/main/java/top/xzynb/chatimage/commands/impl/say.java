@@ -1,5 +1,6 @@
 package top.xzynb.chatimage.commands.impl;
 
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,7 +20,11 @@ public class say extends ICommand {
         for (String arg : args){
             message.append(arg).append(" ");
         }
-        ChatImage.handle(message.toString(), (Player) sender);
+        if (!ChatImage.handle(message.toString(), (Player) sender)){
+            ComponentBuilder componentBuilder = new ComponentBuilder();
+            componentBuilder.append(ChatColor.YELLOW + "<" + sender.getName() + "> " + ChatColor.RESET + message);
+            ChatImage.instance.getServer().spigot().broadcast(componentBuilder.create());
+        }
 
         return true;
     }

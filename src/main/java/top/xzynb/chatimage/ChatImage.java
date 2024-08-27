@@ -49,8 +49,12 @@ public final class ChatImage extends JavaPlugin {
      */
     public static boolean handle(@NotNull  String message, @NotNull Player event_player){
         try{
+            ComponentBuilder componentBuilder = new ComponentBuilder();
+            componentBuilder.append(ChatColor.YELLOW + "<" + event_player.getName() + "> " + ChatColor.RESET);
+
             boolean retFlag = false;
             List<CQCode> cqCodes = CQCode.parseCQCodes(message);
+            CQCode _lastCqCode = null;
             for (CQCode cqCode : cqCodes){
                 if(cqCode.getType().equals("image")){
                     String url = cqCode.getArg("url");
@@ -66,21 +70,24 @@ public final class ChatImage extends JavaPlugin {
                         ChatImage.instance.keyMap.put(id, url);
                     }
 
-                    String msg = "<" + event_player.getName() + "> " +
-                            message.replace(cqCode.getOriginCqCode(),
-                                    ChatColor.GREEN + "[Click to view image #" + id + "]" + ChatColor.RESET);
+                    // 截取从上一段CQCode到这个CQCode中间的纯文本
+                    String msg;
+                    if (_lastCqCode == null){
+                        msg = message.substring(0, cqCode.getStartIndex());
+                    }else{
+                        msg = message.substring(_lastCqCode.getEndIndex(), cqCode.getStartIndex());
+                    }
 
                     Text hover_text = new Text(url);
-                    ComponentBuilder componentBuilder = new ComponentBuilder();
-                    componentBuilder.append(msg);
+                    componentBuilder.append(msg + ChatColor.GREEN + ChatColor.UNDERLINE + "[Click to view Image #" + id + "]" + ChatColor.RESET);
                     componentBuilder.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ci view " + id));
                     componentBuilder.event(new HoverEvent(hover_text.requiredAction(), hover_text));
-                    ChatImage.instance.getServer().spigot().broadcast(componentBuilder.create());
 
                     retFlag = true;
+                    _lastCqCode = cqCode;
                 }
             }
-
+            if (retFlag) ChatImage.instance.getServer().spigot().broadcast(componentBuilder.create());
             return retFlag;
         }catch (NotCQCodeException e){
             // ignore
