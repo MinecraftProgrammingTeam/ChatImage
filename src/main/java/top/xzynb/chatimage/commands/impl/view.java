@@ -15,7 +15,7 @@ import top.xzynb.chatimage.utils.Utils;
 
 public class view extends ICommand {
     public view(){
-        super("view", "", "test");
+        super("view", "", "View Image");
     }
 
     public boolean onCommand(CommandSender sender, String[] args) {
@@ -44,6 +44,6 @@ public class view extends ICommand {
     }
 
     public String permission(){
-        return "chatimage.ms.view";
+        return "chatimage.ci.view";
     }
 }

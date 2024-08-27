@@ -9,3 +9,7 @@ commands:
   ci:
     description: ChatImage相关指令
     usage: /ci
+permissions:
+  chatimage.ci.*:
+    description: All Commands
+    default: true

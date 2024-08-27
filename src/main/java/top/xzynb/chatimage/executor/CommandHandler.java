@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import top.xzynb.chatimage.commands.ICommand;
+import top.xzynb.chatimage.commands.impl.say;
 import top.xzynb.chatimage.commands.impl.view;
 
 import java.util.*;
@@ -33,6 +34,7 @@ public class CommandHandler implements TabExecutor {
      */
     private void initHandler() {
         registerCommand(new view());
+        registerCommand(new say());
     }
 
     /**
@@ -49,7 +51,7 @@ public class CommandHandler implements TabExecutor {
      * @param sender 发送者
      */
     public void showHelp(CommandSender sender) {
-        sender.sendMessage(ChatColor.BLUE + "MessageSync for PBF " + ChatColor.GREEN + "插件帮助");
+        sender.sendMessage(ChatColor.BLUE + "ChatImage " + ChatColor.GREEN + "HELP");
         for (String key: commands.keySet()) {
             sender.sendMessage(commands.get(key).showUsage());
         }
