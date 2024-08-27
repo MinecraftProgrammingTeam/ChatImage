@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import top.xzynb.chatimage.commands.ICommand;
+import top.xzynb.chatimage.commands.impl.clear;
 import top.xzynb.chatimage.commands.impl.say;
 import top.xzynb.chatimage.commands.impl.view;
 
@@ -35,6 +36,7 @@ public class CommandHandler implements TabExecutor {
     private void initHandler() {
         registerCommand(new view());
         registerCommand(new say());
+        registerCommand(new clear());
     }
 
     /**

@@ -7,9 +7,12 @@ description: A Image Chat Plugin
 website: https://xzynb.top
 commands:
   ci:
-    description: ChatImage相关指令
+    description: ChatImage Commands
     usage: /ci
 permissions:
+  chatimage.ci.clear:
+    description: Clear Command
+    default: op
   chatimage.ci.*:
     description: All Commands
     default: true
