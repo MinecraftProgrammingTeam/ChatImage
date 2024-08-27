@@ -16,6 +16,10 @@
 自动识别CQ码中的图片地址，并转换后显示
 ![demo](cidemo.gif)
 
+## 使用
+- 您可以直接在聊天中发送CQ码，图片将会自动转义
+- 您可以使用`/ci send https://image_url`来发送指定地址的图片
+- 您可以使用`/ci say message_content`来发送任意消息，图片会自动转义
 
 ## 其他
 本仓库使用 `Apache License v2.0` 作为开源协议，附加条款：
