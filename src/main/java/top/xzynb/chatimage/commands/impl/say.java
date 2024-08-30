@@ -20,9 +20,16 @@ public class say extends ICommand {
         for (String arg : args){
             message.append(arg).append(" ");
         }
-        if (!ChatImage.handle(message.toString(), (Player) sender)){
+        String playerName = null;
+        if (sender instanceof Player) {
+            playerName = sender.getName();
+        }
+        if (!ChatImage.handle(message.toString(), playerName)){
             ComponentBuilder componentBuilder = new ComponentBuilder();
-            componentBuilder.append(ChatColor.YELLOW + "<" + sender.getName() + "> " + ChatColor.RESET + message);
+            if (sender instanceof Player) {
+                componentBuilder.append(ChatColor.YELLOW + "<" + sender.getName() + "> " + ChatColor.RESET);
+            }
+            componentBuilder.append(message.toString());
             ChatImage.instance.getServer().spigot().broadcast(componentBuilder.create());
         }
 

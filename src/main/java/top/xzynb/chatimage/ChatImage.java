@@ -41,16 +41,22 @@ public final class ChatImage extends JavaPlugin {
         getLogger().info(ChatColor.GREEN + "More Info on " + ChatColor.BLUE + ChatColor.UNDERLINE + "https://github.com/MinecraftProgrammingTeam/ChatImage");
     }
 
+    public static boolean handle(@NotNull String message, Player player){
+        return handle(message, player.getName());
+    }
+
     /**
      * 处理消息中的CQ码并转化
      * @param message 消息
-     * @param event_player 消息发送者
+     * @param playerName 消息发送者名称
      * @return 是否包含图片
      */
-    public static boolean handle(@NotNull  String message, @NotNull Player event_player){
+    public static boolean handle(@NotNull String message, String playerName){
         try{
             ComponentBuilder componentBuilder = new ComponentBuilder();
-            componentBuilder.append(ChatColor.YELLOW + "<" + event_player.getName() + "> " + ChatColor.RESET);
+            if (playerName != null) {
+                componentBuilder.append(ChatColor.YELLOW + "<" + playerName + "> " + ChatColor.RESET);
+            }
 
             boolean retFlag = false;
             List<CQCode> cqCodes = CQCode.parseCQCodes(message);
