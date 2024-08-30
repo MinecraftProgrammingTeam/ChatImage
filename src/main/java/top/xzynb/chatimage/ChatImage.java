@@ -64,6 +64,9 @@ public final class ChatImage extends JavaPlugin {
             for (CQCode cqCode : cqCodes){
                 if(cqCode.getType().equals("image")){
                     String url = cqCode.getArg("url");
+                    if (url == null) {
+                        url = cqCode.getArg("file");
+                    }
                     Integer id;
                     if (url == null) {
                         return false;

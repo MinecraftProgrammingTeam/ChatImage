@@ -87,7 +87,11 @@ public class CQCode {
             HashMap<String, String> args = new HashMap<>();
             for (int i = 1; i < parts.length; i++) {
                 String[] argParts = parts[i].split("=");
-                args.put(argParts[0], argParts[1]);
+                StringBuilder argPart2 = new StringBuilder();
+                for (int j = 1; j < argParts.length; j++) {
+                    argPart2.append(argParts[j]);
+                }
+                args.put(argParts[0], argPart2.toString());
             }
             cqCodes.add(new CQCode(type, args, originCqCode, startIndex, endIndex));
         }
