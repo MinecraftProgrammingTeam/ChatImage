@@ -90,6 +90,9 @@ public class CQCode {
                 StringBuilder argPart2 = new StringBuilder();
                 for (int j = 1; j < argParts.length; j++) {
                     argPart2.append(argParts[j]);
+                    if (j != argParts.length - 1){
+                        argPart2.append("=");
+                    }
                 }
                 args.put(argParts[0], argPart2.toString());
             }
