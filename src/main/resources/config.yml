@@ -1,2 +1,2 @@
-# Nothing here.
-# What are you looking at?
+enable-say-prefix: true
+say-prefix: "[Q群消息]"

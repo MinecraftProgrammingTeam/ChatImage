@@ -26,6 +26,9 @@ public class say extends ICommand {
         }
         if (!ChatImage.handle(message.toString(), playerName)){
             ComponentBuilder componentBuilder = new ComponentBuilder();
+            if (ChatImage.instance.getConfig().getBoolean("enable-say-prefix")){
+                componentBuilder.append(ChatImage.instance.getConfig().getString("say-prefix") + " ");
+            }
             if (sender instanceof Player) {
                 componentBuilder.append(ChatColor.YELLOW + "<" + sender.getName() + "> " + ChatColor.RESET);
             }
